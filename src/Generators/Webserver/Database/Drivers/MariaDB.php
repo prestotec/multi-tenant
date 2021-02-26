@@ -58,7 +58,7 @@ class MariaDB implements DatabaseGenerator
             return true;
         };
 
-        return $connection->system($event->website)->transaction(function (IlluminateConnection $connection) use ($user, $create, $grant) {
+        return $connection->system($event->website)->statement(function (IlluminateConnection $connection) use ($user, $create, $grant) {
             return $user($connection) && $create($connection) && $grant($connection);
         });
     }
@@ -103,7 +103,7 @@ class MariaDB implements DatabaseGenerator
             return $connection->statement("DROP DATABASE IF EXISTS `{$config['database']}`");
         };
 
-        return $connection->system($event->website)->transaction(function (IlluminateConnection $connection) use ($user, $delete) {
+        return $connection->system($event->website)->statement(function (IlluminateConnection $connection) use ($user, $delete) {
             return $delete($connection) && $user($connection);
         });
     }
@@ -118,7 +118,7 @@ class MariaDB implements DatabaseGenerator
             return $connection->statement('FLUSH PRIVILEGES');
         };
 
-        return $connection->system($website)->transaction(function (IlluminateConnection $connection) use ($user, $flush) {
+        return $connection->system($website)->statement(function (IlluminateConnection $connection) use ($user, $flush) {
             return $user($connection) && $flush($connection);
         });
     }
